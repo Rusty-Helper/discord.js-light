@@ -26,7 +26,7 @@
 	},
 	"license": "Apache-2.0",
 	"dependencies": {
-		"discord.js": "github:Rusty-Helper/discord.js-light#ef57dea660c9e02bb3375554d82a6145081b4ec8"
+		"discord.js": "github:Rusty-Helper/discord.js"
 	},
 	"engines": {
 		"node": ">=14.0.0"
