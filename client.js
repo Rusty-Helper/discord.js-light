@@ -22,7 +22,14 @@ Discord.Client = class Client extends Discord.Client {
 		};
 		super(options);
 		actions(this);
+		this.ws._hotreload = options.sessions;
+		this.exitFunction = options.exitFunction;
+
 					};
+
+				if (eventType !== "exit") {
+					await this.exitFunction();
+					process.exit();
 				}
 			});
 		}
