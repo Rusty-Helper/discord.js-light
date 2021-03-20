@@ -25,7 +25,22 @@ Discord.Client = class Client extends Discord.Client {
 		this.ws._hotreload = options.sessions;
 		this.exitFunction = options.exitFunction;
 
+		this.on(Discord.Constants.Events.SHARD_RESUME, () => {
+			if (!this.readyAt) { this.ws.checkShardsReady(); }
+		});
+
+		for (const eventType of ["exit", "SIGINT", "SIGTERM"]) {
+			process.on(eventType, async () => {
+				this.ws._hotreload = {};
+				Object.assign(this.ws._hotreload, ...this.ws.shards.map(s => {
+					s.connection.close();
+					return {
+						[s.id]: {
+							id: s.sessionID,
+							seq: s.sequence
+						}
 					};
+				}));
 
 				if (eventType !== "exit") {
 					await this.exitFunction();
